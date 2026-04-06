@@ -79,10 +79,10 @@ const Registration = () => {
 
   const fields = [
     { name: 'name', label: t('Name'), icon: <User size={18} />, type: 'text', placeholder: 'Enter full name', full: true },
-    { name: 'age', label: t('Age'), icon: <Calendar size={18} />, type: 'number', placeholder: '30', full: false },
+    { name: 'age', label: t('Age'), icon: <Calendar size={18} />, type: 'text', inputMode: 'numeric', pattern: '[0-9]*', placeholder: '30', full: false },
     { name: 'gender', label: t('Gender'), icon: <Users size={18} />, type: 'select', options: ['Male', 'Female', 'Other'], full: false },
-    { name: 'aadhaar', label: t('Aadhaar'), icon: <CreditCard size={18} />, type: 'text', placeholder: '1234 5678 9012', full: true },
-    { name: 'mobile', label: t('Mobile'), icon: <Phone size={18} />, type: 'tel', placeholder: '9876543210', full: true },
+    { name: 'aadhaar', label: t('Aadhaar'), icon: <CreditCard size={18} />, type: 'text', inputMode: 'numeric', pattern: '[0-9]*', placeholder: '1234 5678 9012', full: true },
+    { name: 'mobile', label: t('Mobile'), icon: <Phone size={18} />, type: 'tel', inputMode: 'tel', placeholder: '9876543210', full: true },
   ];
 
   return (
@@ -124,15 +124,16 @@ const Registration = () => {
                       ) : (
                         <input
                           name={f.name}
-                          type={f.type === 'number' ? 'number' : f.type}
+                          type="text"
+                          inputMode={f.inputMode || 'text'}
+                          pattern={f.pattern}
                           className={`form-input ${hasError ? 'error' : ''}`}
                           placeholder={f.placeholder}
                           value={formData[f.name]}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           maxLength={f.name === 'aadhaar' ? 14 : f.name === 'mobile' ? 10 : undefined}
-                          min={f.name === 'age' ? 1 : undefined}
-                          max={f.name === 'age' ? 120 : undefined}
+                          autoComplete={f.name === 'mobile' ? 'tel' : f.name === 'aadhaar' ? 'off' : 'off'}
                         />
                       )}
                     </div>

@@ -79,10 +79,11 @@ const Login = () => {
                 value={uhid}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                autoComplete="off"
                 style={{
                   textAlign: 'center',
-                  fontSize: '1.25rem',
-                  letterSpacing: '2px',
+                  fontSize: '16px',
+                  letterSpacing: '1px',
                   textTransform: 'uppercase',
                   padding: '1.15rem'
                 }}
