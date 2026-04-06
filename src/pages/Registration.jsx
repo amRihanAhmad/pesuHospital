@@ -1,0 +1,159 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { usePatient } from '../context/PatientContext';
+import { ArrowRight, ArrowLeft, User, Phone, CreditCard, Calendar, Users, AlertCircle } from 'lucide-react';
+
+const Registration = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { updatePatientData } = usePatient();
+
+  const [formData, setFormData] = useState({
+    name: '', age: '', gender: 'Male', aadhaar: '', mobile: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  const VALIDATORS = {
+    name: (v) => {
+      if (!v.trim()) return t('Name is required');
+      if (v.trim().length < 2) return t('Name min 2');
+      if (!/^[a-zA-Z\s.'\u0900-\u097F\u0C80-\u0CFF\u0C00-\u0C7F\u0B80-\u0BFF-]+$/u.test(v.trim())) return t('Name letters only');
+      return '';
+    },
+    age: (v) => {
+      if (!v) return t('Age is required');
+      const n = Number(v);
+      if (!Number.isInteger(n) || n < 0) return t('Enter valid age');
+      if (n < 1 || n > 120) return t('Age range');
+      return '';
+    },
+    aadhaar: (v) => {
+      if (!v.trim()) return t('Aadhaar required');
+      const digits = v.replace(/\s/g, '');
+      if (!/^\d+$/.test(digits)) return t('Aadhaar digits only');
+      if (digits.length !== 12) return t('Aadhaar 12 digits');
+      return '';
+    },
+    mobile: (v) => {
+      if (!v.trim()) return t('Mobile required');
+      const digits = v.replace(/\s/g, '');
+      if (!/^\d+$/.test(digits)) return t('Mobile digits only');
+      if (digits.length !== 10) return t('Mobile 10 digits');
+      if (!/^[6-9]/.test(digits)) return t('Mobile start');
+      return '';
+    },
+    gender: () => ''
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (touched[name]) {
+      setErrors(prev => ({ ...prev, [name]: VALIDATORS[name](value) }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    setErrors(prev => ({ ...prev, [name]: VALIDATORS[name](value) }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+    Object.keys(VALIDATORS).forEach(key => {
+      newErrors[key] = VALIDATORS[key](formData[key]);
+    });
+    setErrors(newErrors);
+    setTouched({ name: true, age: true, aadhaar: true, mobile: true, gender: true });
+
+    const hasErrors = Object.values(newErrors).some(e => e !== '');
+    if (!hasErrors) {
+      updatePatientData({ personalInfo: formData });
+      navigate('/symptoms');
+    }
+  };
+
+  const fields = [
+    { name: 'name', label: t('Name'), icon: <User size={18} />, type: 'text', placeholder: 'Enter full name', full: true },
+    { name: 'age', label: t('Age'), icon: <Calendar size={18} />, type: 'number', placeholder: '30', full: false },
+    { name: 'gender', label: t('Gender'), icon: <Users size={18} />, type: 'select', options: ['Male', 'Female', 'Other'], full: false },
+    { name: 'aadhaar', label: t('Aadhaar'), icon: <CreditCard size={18} />, type: 'text', placeholder: '1234 5678 9012', full: true },
+    { name: 'mobile', label: t('Mobile'), icon: <Phone size={18} />, type: 'tel', placeholder: '9876543210', full: true },
+  ];
+
+  return (
+    <div className="page-content animate-fade-in-up">
+      <div className="hospital-card">
+        <div className="hospital-card-body">
+          <button onClick={() => navigate('/patient-type')} className="back-btn">
+            <ArrowLeft size={16} /> {t('Back')}
+          </button>
+
+          <div className="step-indicator">
+            <div className="step-dot active"></div>
+            <div className="step-dot active"></div>
+            <div className="step-dot"></div>
+          </div>
+
+          <h2 className="page-title">{t('Register')}</h2>
+          <p className="page-subtitle">{t('Fill in your details')}</p>
+
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="form-grid">
+              {fields.map(f => {
+                const hasError = touched[f.name] && errors[f.name];
+                return (
+                  <div key={f.name} className={f.full ? 'form-group' : 'form-group'}>
+                    <label className="form-label">{f.label}</label>
+                    <div className="form-input-icon">
+                      {f.icon}
+                      {f.type === 'select' ? (
+                        <select
+                          name={f.name}
+                          className="form-input form-select"
+                          value={formData[f.name]}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        >
+                          {f.options.map(o => <option key={o} value={o}>{o}</option>)}
+                        </select>
+                      ) : (
+                        <input
+                          name={f.name}
+                          type={f.type === 'number' ? 'number' : f.type}
+                          className={`form-input ${hasError ? 'error' : ''}`}
+                          placeholder={f.placeholder}
+                          value={formData[f.name]}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          maxLength={f.name === 'aadhaar' ? 14 : f.name === 'mobile' ? 10 : undefined}
+                          min={f.name === 'age' ? 1 : undefined}
+                          max={f.name === 'age' ? 120 : undefined}
+                        />
+                      )}
+                    </div>
+                    {hasError && (
+                      <div className="form-error">
+                        <AlertCircle size={14} /> {errors[f.name]}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-lg btn-block" style={{ marginTop: '1.5rem' }}>
+              {t('Next')} <ArrowRight size={20} />
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Registration;
