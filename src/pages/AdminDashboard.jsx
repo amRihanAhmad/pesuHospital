@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Activity, Users, TrendingUp, Globe } from 'lucide-react';
+import { Activity, Users, TrendingUp, Globe, UsersRound } from 'lucide-react';
 
 const deptData = [
   { name: 'Gen Med', patients: 120 },
@@ -39,6 +40,20 @@ const peakHour = peakHours.reduce((a, b) => a.count > b.count ? a : b);
 const AdminDashboard = () => {
   return (
     <div className="dashboard-container animate-fade-in">
+      {/* Dashboard Switcher */}
+      <div className="dashboard-switcher">
+        <div className="dashboard-switcher-inner">
+          <Link to="/staff" className="dashboard-switch-btn">
+            <UsersRound size={14} />
+            Staff
+          </Link>
+          <Link to="/admin" className="dashboard-switch-btn active">
+            <BarChart size={14} />
+            Admin
+          </Link>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="dashboard-header">
         <div>

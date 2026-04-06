@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Users, Phone, Clock, Building2, UserPlus, X, ArrowRight, AlertCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Users, Phone, Clock, Building2, UserPlus, X, ArrowRight, AlertCircle, BarChart } from 'lucide-react';
 
 const mockQueue = [
   { id: 1, token: 'GM-042', name: 'Ramesh Kumar', dept: 'General Medicine', floor: 1, time: '10:15 AM', status: 'waiting' },
@@ -53,6 +54,20 @@ const StaffDashboard = () => {
 
   return (
     <div className="dashboard-container animate-fade-in">
+      {/* Dashboard Switcher */}
+      <div className="dashboard-switcher">
+        <div className="dashboard-switcher-inner">
+          <Link to="/staff" className="dashboard-switch-btn active">
+            <Users size={14} />
+            Staff
+          </Link>
+          <Link to="/admin" className="dashboard-switch-btn">
+            <BarChart size={14} />
+            Admin
+          </Link>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="dashboard-header">
         <div>

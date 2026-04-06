@@ -21,8 +21,8 @@ function App() {
         <Route path="/login" element={<Layout><Login /></Layout>} />
         <Route path="/symptoms" element={<Layout><Symptoms /></Layout>} />
         <Route path="/token" element={<Layout hideFooter><TokenSlip /></Layout>} />
-        <Route path="/staff" element={<Layout><StaffDashboard /></Layout>} />
-        <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
+        <Route path="/staff" element={<Layout hideFooter><StaffDashboard /></Layout>} />
+        <Route path="/admin" element={<Layout hideFooter><AdminDashboard /></Layout>} />
       </Routes>
     </Router>
   );

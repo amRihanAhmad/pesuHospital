@@ -1136,6 +1136,109 @@ body {
   color: var(--text-muted);
 }
 
+.footer-staff-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-staff-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.footer-staff-link:hover {
+  color: var(--hospital-primary);
+  background: var(--hospital-primary-light);
+}
+
+.staff-nav-bar {
+  background: var(--surface-gray);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.staff-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.staff-nav-back:hover {
+  color: var(--hospital-primary);
+  background: var(--hospital-primary-light);
+}
+
+.staff-nav-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.dashboard-switcher {
+  background: var(--surface-white);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+  display: inline-flex;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.dashboard-switcher-inner {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.dashboard-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.dashboard-switch-btn:hover {
+  color: var(--hospital-primary);
+  background: var(--surface-gray);
+}
+
+.dashboard-switch-btn.active {
+  background: var(--hospital-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-switch-btn.active:hover {
+  background: var(--hospital-primary-dark);
+  color: white;
+}
+
 /* ─── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hospital-header-info {
